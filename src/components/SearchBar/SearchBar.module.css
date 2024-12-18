@@ -1,0 +1,30 @@
+.searchBar {
+    display: flex;
+    align-items: center;
+    max-width: 40vw;
+    width: 100%;
+    background: #938f8f;
+    padding: 12px 24px;
+    border-radius: 24px;
+    transition: 0.3s ease-in-out;
+    input{
+        font-size: 16px;
+        width: 100%;
+        background: none;
+        border: none;
+        outline: none;
+        line-height: 32px;
+    }
+    svg{
+        font-size: 24px;
+        fill: #1f2023;
+    }
+    svg:hover{
+        scale: 1.1;
+        fill: darkcyan;
+    }
+}
+.searchBar:hover{
+    background: lightgray;
+    scale: 1.01;
+}
