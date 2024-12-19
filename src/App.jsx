@@ -8,16 +8,15 @@ import {useImageSearch} from "@api/apiRequests.js";
 import Loader from "@components/Loader/Loader.jsx";
 import LoadMoreBtn from "@components/LoadMoreBtn/LoadMoreBtn.jsx";
 
-import Modal from 'react-modal';
-import {useStore} from "@/Store/useStore.jsx";
-
-import { IoCloseOutline } from "react-icons/io5";
+import ImageModal from "@components/ImageModal/ImageModal.jsx";
+import ErrorMessage from "@components/ErrorMessage/ErrorMessage.jsx";
 
 function App() {
-    const {image} = useStore();
-    Modal.setAppElement('#root');
+
+
     const [query, setQuery] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [fullImage, setFullImage] = useState('');
 
     const {
         data:images,
@@ -37,13 +36,11 @@ function App() {
 
     },[query])
 
-    const openModal = (e) => {
-        if(e.tagName === "IMG") setIsModalOpen(true);
+    const openModal = (image) => {
+        setFullImage(image);
+        setIsModalOpen(true);
     }
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-    }
 
 
     return (
@@ -54,9 +51,10 @@ function App() {
         {!images?.pages[0].total_images &&
             !!query.length && !hasNextPage &&
             !isLoading &&
+            !isError &&
             <p className={styles.text}>no matches for your query</p>
         }
-        {isError && <p>{error}</p>}
+        {isError && <ErrorMessage message={error} />}
         { images &&
                 <>
                     <ImageGallery images={images} openModal={openModal} />
@@ -66,32 +64,9 @@ function App() {
                             isFetchingNextPage={isFetchingNextPage}
                             text='Load more'
                         />}
+                    <ImageModal isOpen={isModalOpen} closeModal={()=>setIsModalOpen(false)} image={fullImage}/>
                 </>
         }
-        <Modal
-            isOpen={isModalOpen}
-            onRequestClose={closeModal}
-            contentLabel="Example Modal"
-            style={{
-                overlay: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    zIndex:2,
-                },
-                content: {
-                    width: '80vw',
-                    height: '80vh',
-                    margin: 'auto',
-                    border:'none',
-                    position:'relative',
-                    backgroundColor: 'rgba(0,0,0,0.8)'
-                },
-            }}
-        >
-            <img className={styles.fullImage} src={image}    alt={'full image'} />
-            <button className={styles.closeButton} onClick={closeModal}><IoCloseOutline /></button>
-        </Modal>
-
-
     </>
   )
 }

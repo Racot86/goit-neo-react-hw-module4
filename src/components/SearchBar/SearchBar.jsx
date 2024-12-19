@@ -1,22 +1,27 @@
 import styles from "./SearchBar.module.css";
 import { FaSearch } from "react-icons/fa";
-import {useRef} from "react";
 import PropTypes from "prop-types";
 
 const SearchBar = ({query}) => {
-    const inputRef = useRef(null)
+
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
-            query(inputRef.current.value.trim())
+            e.preventDefault();
+            handleSubmit(e)
         }
     };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let value = e.target.search ? e.target.search.value.trim() : e.target.value.trim();
+        if (value) query(value)
+    }
 
     return (
-        <div className={styles.searchBar}>
-            <input ref={inputRef} onKeyDown={handleKeyDown}  placeholder="Search" />
-            <FaSearch onClick={()=>query(inputRef.current.value.trim())} />
-        </div>
+        <form onSubmit={handleSubmit} className={styles.searchBar}>
+            <input name='search'  onKeyDown={handleKeyDown}  placeholder="Search" />
+            <button style={{background:'transparent',border:'none'}} type='submit'><FaSearch /></button>
+        </form>
     )
 }
 export default SearchBar

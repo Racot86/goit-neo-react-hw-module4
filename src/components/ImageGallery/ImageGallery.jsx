@@ -6,7 +6,7 @@ import {ImageCard} from "@components/ImageCard/ImageCard.jsx";
 const ImageGallery = ({ images, openModal }) => {
 
     return (
-        <div className={styles.gallery} onClick={(e) => openModal(e.target)}>
+        <ul className={styles.gallery}>
             {images?.pages.map((page) => (
                 page.results.map((image)=> (
                     <ImageCard
@@ -16,7 +16,7 @@ const ImageGallery = ({ images, openModal }) => {
                     />
                     ))
             ))}
-        </div>
+        </ul>
     )
 }
 export default ImageGallery
