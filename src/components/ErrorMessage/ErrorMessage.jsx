@@ -1,11 +1,7 @@
-import PropTypes from "prop-types";
 
-const ErrorMessage = ({message}) => {
-    console.log('msg', message)
-    return <p style={{color:'red'}}>{message.message}</p>
+import {ToastContainer} from "react-toastify";
+
+const ErrorMessage = () => {
+    return <ToastContainer />
 }
 export default ErrorMessage;
-
-ErrorMessage.propTypes = {
-    message: PropTypes.object.isRequired
-}

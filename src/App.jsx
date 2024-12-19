@@ -10,6 +10,7 @@ import LoadMoreBtn from "@components/LoadMoreBtn/LoadMoreBtn.jsx";
 
 import ImageModal from "@components/ImageModal/ImageModal.jsx";
 import ErrorMessage from "@components/ErrorMessage/ErrorMessage.jsx";
+import {toast} from "react-toastify";
 
 function App() {
 
@@ -54,7 +55,7 @@ function App() {
             !isError &&
             <p className={styles.text}>no matches for your query</p>
         }
-        {isError && <ErrorMessage message={error} />}
+        {isError && toast.error(error.message)}
         { images &&
                 <>
                     <ImageGallery images={images} openModal={openModal} />
@@ -67,6 +68,7 @@ function App() {
                     <ImageModal isOpen={isModalOpen} closeModal={()=>setIsModalOpen(false)} image={fullImage}/>
                 </>
         }
+        <ErrorMessage />
     </>
   )
 }
