@@ -10,7 +10,8 @@ import LoadMoreBtn from "@components/LoadMoreBtn/LoadMoreBtn.jsx";
 
 import ImageModal from "@components/ImageModal/ImageModal.jsx";
 import ErrorMessage from "@components/ErrorMessage/ErrorMessage.jsx";
-import {toast} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
+import {useQueryClient} from "@tanstack/react-query";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
     const [query, setQuery] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [fullImage, setFullImage] = useState('');
+    const queryClient = useQueryClient();
 
     const {
         data:images,
@@ -27,15 +29,14 @@ function App() {
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
-        refetch,
     } = useImageSearch(query)
 
     useEffect(() => {
         if(query.length){
-            refetch()
+            queryClient.resetQueries(['images']);
         }
 
-    },[query])
+    },[query,queryClient])
 
     const openModal = (image) => {
         setFullImage(image);
@@ -55,7 +56,7 @@ function App() {
             !isError &&
             <p className={styles.text}>no matches for your query</p>
         }
-        {isError && toast.error(error.message)}
+        {isError && <ErrorMessage message={error.message} />}
         { images &&
                 <>
                     <ImageGallery images={images} openModal={openModal} />
@@ -68,7 +69,7 @@ function App() {
                     <ImageModal isOpen={isModalOpen} closeModal={()=>setIsModalOpen(false)} image={fullImage}/>
                 </>
         }
-        <ErrorMessage />
+        <ToastContainer />
     </>
   )
 }

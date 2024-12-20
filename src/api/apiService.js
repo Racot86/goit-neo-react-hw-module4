@@ -1,4 +1,5 @@
 import axios from "axios";
+import error from "eslint-plugin-react/lib/util/error.js";
 
 const DEFAULT_URL = import.meta.env.VITE_DEFAULT_URL;
 const ACCESS_KEY = import.meta.env.VITE_ACCESS_KEY;
